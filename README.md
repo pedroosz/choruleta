@@ -2,7 +2,20 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-First, run the development server:
+First, set the environment variables:
+
+```bash
+# Your discord application ID
+DISCORD_CLIENT_ID=""
+# Your discord application secret
+DISCORD_CLIENT_SECRET=""
+ # Your next auth url, this is the default
+NEXTAUTH_URL="http://localhost:3000"
+# Your websocket url, ex: ws://localhost:3001
+WEBSOCKET_URL=""
+```
+
+After, run the development server:
 
 ```bash
 npm run dev
@@ -16,21 +29,30 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Explanation:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+The front-end assumes the websocket will send the following data:
 
-## Learn More
+for when a number is sorted:
 
-To learn more about Next.js, take a look at the following resources:
+```json
+{
+  "type": "roulette_result",
+  "data": {
+    "number": 10
+  }
+}
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+and after it, the data for the countdown until the next number is sorted
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+```json
+{
+  "type": "roulette_cooldown",
+  "data": {
+    "duration": 9e3
+  }
+}
+```
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+> _The duration is in milliseconds_
